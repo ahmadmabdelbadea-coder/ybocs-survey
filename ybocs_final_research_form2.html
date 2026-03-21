@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>استبيان تقييم أعراض الوسواس القهري والتوعية به</title>
+  <style>
+    :root{
+      --bg:#f6f8fc; --card:#ffffff; --text:#1f2937; --muted:#6b7280; --border:#dbe4f0;
+      --accent:#2563eb; --accent-soft:#eaf1ff; --success:#065f46; --success-bg:#d1fae5;
+      --warn:#92400e; --warn-bg:#fef3c7; --danger:#991b1b; --danger-bg:#fee2e2;
+      --shadow:0 12px 32px rgba(15,23,42,.08); --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#eef4ff 0,var(--bg) 220px);color:var(--text);line-height:1.75}
+    .wrap{width:min(980px,100%);margin:auto;padding:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 20px;margin:18px 0}
+    .hero{padding:30px 22px}
+    h1,h2,h3{margin:0 0 10px;line-height:1.35}
+    h1{font-size:clamp(1.6rem,3vw,2.4rem)}
+    .subtitle,.muted{color:var(--muted)}
+    .badge{display:inline-block;background:var(--accent-soft);color:var(--accent);border:1px solid #cfe0ff;border-radius:999px;padding:6px 12px;font-size:.92rem;margin-bottom:12px}
+    .section-title{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .section-title .num{width:34px;height:34px;border-radius:999px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:800;border:1px solid #cfe0ff;flex:0 0 34px}
+    .note{background:#fafcff;border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-top:14px}
+    .poster{width:100%;border-radius:18px;border:1px solid var(--border);margin:14px 0 0;display:block;background:#fff}
+    .field{margin:16px 0}
+    .field label.main{display:block;font-weight:700;margin-bottom:8px}
+    select,input[type="text"]{width:100%;border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:1rem;background:#fff}
+    .choices{display:grid;gap:10px;margin-top:10px}
+    .option{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:#fcfdff;transition:.18s ease}
+    .option:hover{background:#f8fbff;border-color:#bfd2ff}
+    .option input{margin-top:5px;transform:scale(1.12)}
+    .option .score{min-width:30px;color:var(--accent);font-weight:800}
+    .hidden{display:none}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+    button{border:none;border-radius:14px;padding:14px 18px;font-size:1rem;font-weight:800;cursor:pointer}
+    .primary{background:var(--accent);color:#fff}
+    .secondary{background:#eef2f7;color:#1f2937;border:1px solid var(--border)}
+    .ghost{background:#fff;color:var(--accent);border:1px solid #cfe0ff}
+    .msg{display:none;border-radius:16px;padding:14px 16px;margin-top:14px;border:1px solid var(--border)}
+    .msg.show{display:block}
+    .msg.error{background:var(--danger-bg);color:var(--danger);border-color:#fecaca}
+    .msg.info{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
+    .result{display:none}
+    .result.show{display:block}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+    .box{border:1px solid var(--border);border-radius:16px;background:#fafcff;padding:14px}
+    .box .label{color:var(--muted);font-size:.94rem;margin-bottom:6px}
+    .box .value{font-size:1.22rem;font-weight:800}
+    .sev{padding:12px 14px;border-radius:14px;font-weight:800;margin:10px 0 14px;border:1px solid var(--border)}
+    .sev-minimal{background:var(--success-bg);color:var(--success);border-color:#a7f3d0}
+    .sev-mild{background:#ecfccb;color:#3f6212;border-color:#d9f99d}
+    .sev-moderate{background:var(--warn-bg);color:var(--warn);border-color:#fde68a}
+    .sev-marked{background:#ffedd5;color:#9a3412;border-color:#fdba74}
+    .sev-severe{background:var(--danger-bg);color:var(--danger);border-color:#fecaca}
+    .small{font-size:.92rem}
+    .footer-note{color:var(--muted);font-size:.92rem;margin-top:14px}
+    @media (max-width:760px){
+      .wrap{padding:12px}.card{padding:18px 14px}.result-grid{grid-template-columns:1fr}.actions{flex-direction:column}button{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card hero" id="screen_intro">
+      <div class="badge">نسخة نهائية مخصصة للبحث</div>
+      <h1>استبيان تقييم أعراض الوسواس القهري والتوعية به</h1>
+      <div class="subtitle">نموذج عربي مخصص لمشروع بحثي مع حساب تلقائي للنتيجة وحفظ الردود</div>
+
+      <div class="note">
+        <strong>تنبيه:</strong> هذا الاستبيان مخصص للتثقيف الصحي والفحص الأولي والبحث العلمي فقط، ولا يُعد تشخيصًا طبيًا.
+      </div>
+
+      <h3 style="margin-top:18px;">الملصق التثقيفي</h3>
+      <p>يرجى قراءة الملصق التالي حول اضطراب الوسواس القهري قبل البدء بالإجابة على الأسئلة.</p>
+
+      <img class="poster" src="F:\Programming\Graduation Project\poster.jpg" alt="الملصق التثقيفي حول الوسواس القهري">
+
+      <div class="note small">
+        بعد قراءة الملصق، اضغط على زر <strong>ابدأ الاستبيان</strong>.
+      </div>
+
+      <div class="actions">
+        <button type="button" class="primary" onclick="showSurvey()">ابدأ الاستبيان</button>
+      </div>
+    </div>
+
+    <form id="surveyForm" class="hidden" novalidate>
+      <div class="card">
+        <div class="section-title"><span class="num">1</span><h2>الموافقة على المشاركة</h2></div>
+        <div class="field">
+          <label class="main">هل توافق على المشاركة في هذا الاستبيان لأغراض البحث العلمي؟</label>
+          <div class="choices">
+            <label class="option"><input type="radio" name="consent" value="yes"><span>أوافق على المشاركة</span></label>
+            <label class="option"><input type="radio" name="consent" value="no"><span>لا أوافق</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><span class="num">2</span><h2>البيانات الشخصية</h2></div>
+        <p class="muted small">هذه البيانات لا تدخل في حساب الدرجة النهائية، وتستخدم فقط لأغراض التحليل الإحصائي وتقليل التحيز.</p>
+
+        <div class="field"><label class="main" for="age">الفئة العمرية</label>
+          <select id="age"><option value="">اختر</option><option>أقل من 18 سنة</option><option>18–24 سنة</option><option>25–34 سنة</option><option>35–44 سنة</option><option>45 سنة أو أكثر</option></select>
+        </div>
+        <div class="field"><label class="main" for="gender">الجنس</label>
+          <select id="gender"><option value="">اختر</option><option>ذكر</option><option>أنثى</option><option>أفضل عدم الإفصاح</option></select>
+        </div>
+        <div class="field"><label class="main" for="education">المستوى التعليمي</label>
+          <select id="education"><option value="">اختر</option><option>ثانوي</option><option>طالب جامعي</option><option>خريج جامعي</option><option>دراسات عليا</option></select>
+        </div>
+        <div class="field"><label class="main" for="employment">الحالة الوظيفية</label>
+          <select id="employment"><option value="">اختر</option><option>طالب</option><option>موظف</option><option>غير موظف</option></select>
+        </div>
+        <div class="field"><label class="main" for="psych">هل سبق تشخيصك باضطراب نفسي؟</label>
+          <select id="psych"><option value="">اختر</option><option>نعم</option><option>لا</option><option>أفضل عدم الإجابة</option></select>
+        </div>
+        <div class="field"><label class="main" for="family">هل يوجد تاريخ عائلي للوسواس القهري؟</label>
+          <select id="family"><option value="">اختر</option><option>نعم</option><option>لا</option><option>لا أعلم</option></select>
+        </div>
+        <div class="field"><label class="main" for="meds">هل تتناول حاليًا أدوية نفسية؟</label>
+          <select id="meds"><option value="">اختر</option><option>نعم</option><option>لا</option></select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><span class="num">3</span><h2>مقياس ييل براون للوسواس القهري (Y‑BOCS)</h2></div>
+        <p class="muted">يرجى اختيار الإجابة التي تصف حالتك خلال <strong>السبعة أيام الماضية</strong>.</p>
+        <div id="questions"></div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="primary" onclick="submitSurvey()">احسب النتيجة وأرسل الرد</button>
+        <button type="reset" class="secondary" onclick="resetUI()">إعادة تعيين</button>
+        <button type="button" class="ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">العودة للأعلى</button>
+      </div>
+
+      <div id="errorBox" class="msg error"></div>
+      <div id="infoBox" class="msg info"></div>
+
+      <div id="resultCard" class="card result" aria-live="polite">
+        <h2>النتيجة</h2>
+        <div class="result-grid">
+          <div class="box"><div class="label">الدرجة الكلية</div><div class="value" id="totalValue">—</div></div>
+          <div class="box"><div class="label">درجة الأفكار الوسواسية</div><div class="value" id="obsValue">—</div></div>
+          <div class="box"><div class="label">درجة الأفعال القهرية</div><div class="value" id="compValue">—</div></div>
+        </div>
+        <div id="severityBox" class="sev">—</div>
+        <div class="box">
+          <div class="label">التوصية</div>
+          <div class="value" id="recValue" style="font-size:1rem;font-weight:700;">—</div>
+        </div>
+        <div class="footer-note">
+          هذا الاستبيان لا يغني عن التقييم الطبي أو النفسي المتخصص. إذا كانت الأعراض تسبب ضيقًا واضحًا أو تؤثر في حياتك اليومية، فينصح بطلب المساعدة من مختص بالصحة النفسية.
+        </div>
+      </div>
+    </form>
+  </div>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydUyAJjMBzv0vfLtO92j9jue1zlSgWHq7CLiDPu9ePszQ2DuJRmXZU9yjVFLenaVdS/exec";
+
+const questionsData = [
+  {id:1,group:"obsession",title:"مقدار الوقت الذي تستغرقه الأفكار الوسواسية",options:[
+    {score:0,text:"لا شيء."},{score:1,text:"أقل من ساعة في اليوم، أو تتكرر أحيانًا."},{score:2,text:"من ساعة إلى ثلاث ساعات في اليوم، أو تتكرر كثيرًا لكن معظم ساعات اليوم خالية من الأفكار الوسواسية."},{score:3,text:"من ثلاث إلى ثماني ساعات في اليوم، أو تحدث كثيرًا جدًا وفي معظم ساعات اليوم."},{score:4,text:"أكثر من ثماني ساعات في اليوم، أو تحدث بشكل دائم ونادرًا ما تمر ساعة بدون وساوس كثيرة."}]},
+  {id:2,group:"obsession",title:"مقدار التعارض الذي تحدثه الأفكار الوسواسية مع نشاطاتك الاجتماعية أو العملية",options:[
+    {score:0,text:"لا يوجد."},{score:1,text:"تعارض خفيف مع النشاطات الاجتماعية أو العملية ولكن النشاط العام لا يتأثر."},{score:2,text:"تعارض واضح في النشاطات الاجتماعية أو العملية ولكن يمكن السيطرة عليه."},{score:3,text:"تسبب خللًا كبيرًا في أداء النشاطات الاجتماعية أو العملية."},{score:4,text:"تسبب عجزًا بليغًا."}]},
+  {id:3,group:"obsession",title:"مقدار التوتر أو القلق المصاحب للأفكار الوسواسية",options:[
+    {score:0,text:"لا يوجد."},{score:1,text:"خفيف (أحيانًا)، وليس مزعجًا."},{score:2,text:"متوسط (غالبًا) ومزعج، ولكن يمكن السيطرة عليه."},{score:3,text:"شديد (أغلب الوقت) ومزعج جدًا."},{score:4,text:"توتر بليغ (دائم) لحد الإعاقة تقريبًا."}]},
+  {id:4,group:"obsession",title:"مقدار الجهد المبذول في مقاومة الأفكار الوسواسية",options:[
+    {score:0,text:"أقاوم دائمًا، أو أن الأفكار قليلة جدًا بحيث لا حاجة للمقاومة."},{score:1,text:"أحاول أن أقاوم معظم الوقت."},{score:2,text:"أبذل بعض الجهد حتى أقاوم."},{score:3,text:"أستسلم لكل الأفكار الوسواسية بدون محاولة للسيطرة عليها، وإن حاولت السيطرة فيكون بعد تردد."},{score:4,text:"أستسلم كلية وبإرادتي للأفكار الوسواسية كلها."}]},
+  {id:5,group:"obsession",title:"مقدار سيطرتك على الأفكار الوسواسية",options:[
+    {score:0,text:"سيطرة تامة."},{score:1,text:"سيطرة كبيرة، عادة يمكنني أن أوقف أو أصرف انتباهي عن الوسواس عند بذل بعض الجهد والتركيز."},{score:2,text:"سيطرة متوسطة، بعض الأحيان أستطيع إيقاف أو صرف انتباهي عن الوسواس."},{score:3,text:"سيطرة قليلة، نادرًا ما أنجح في إيقاف الوساوس، وأستطيع فقط صرف الانتباه وبصعوبة."},{score:4,text:"لا سيطرة، نادرًا ما أستطيع صرف الانتباه عن الوساوس ولو للحظات قليلة."}]},
+  {id:6,group:"compulsion",title:"مقدار الوقت الذي تمضيه في القيام بالأفعال القهرية",options:[
+    {score:0,text:"لا شيء."},{score:1,text:"أقل من ساعة في اليوم، أو تقوم بالأفعال أحيانًا."},{score:2,text:"من ساعة إلى ثلاث ساعات في اليوم، أو تقوم بالأفعال كثيرًا ولكن معظم الساعات تخلو من الأفعال القهرية."},{score:3,text:"أكثر من ثلاث ساعات إلى ثماني ساعات في اليوم، أو تقوم بالأفعال كثيرًا جدًا وخلال معظم ساعات اليوم."},{score:4,text:"أكثر من ثماني ساعات في اليوم، أو تقوم بالأفعال بشكل دائم ونادرًا ما تمر ساعة لا تقوم فيها بالأفعال."}]},
+  {id:7,group:"compulsion",title:"مقدار التعارض الذي تحدثه الأفعال القهرية في نشاطاتك الاجتماعية أو العملية",options:[
+    {score:0,text:"لا يوجد."},{score:1,text:"تعارض خفيف مع النشاطات الاجتماعية أو العملية، ولكن النشاط العام لا يتأثر."},{score:2,text:"تعارض واضح مع النشاطات الاجتماعية أو العملية ولكن يمكن السيطرة عليه."},{score:3,text:"تسبب خللًا كبيرًا في أداء النشاطات الاجتماعية أو العملية."},{score:4,text:"تسبب عجزًا كبيرًا."}]},
+  {id:8,group:"compulsion",title:"مقدار التوتر والقلق الناتج في حال الامتناع عن القيام بالأفعال القهرية",options:[
+    {score:0,text:"لا يوجد."},{score:1,text:"قلق بسيط عند الامتناع عن القيام بالأفعال."},{score:2,text:"يظهر القلق لكن يمكن تحمله."},{score:3,text:"قلق واضح ومزعج للغاية."},{score:4,text:"قلق شديد يسبب عجزًا بليغًا."}]},
+  {id:9,group:"compulsion",title:"مقدار الجهد المبذول في مقاومة الأفعال القهرية",options:[
+    {score:0,text:"أبذل جهدًا حتى أقاوم دائمًا، أو أن الأفعال القهرية قليلة بحيث لا حاجة للمقاومة."},{score:1,text:"أحاول أن أقاوم معظم الوقت."},{score:2,text:"أعمل بعض المحاولات للمقاومة."},{score:3,text:"أستسلم لكل الأفعال القهرية بدون محاولة للسيطرة عليها، وإن حاولت السيطرة فيكون بعد تردد."},{score:4,text:"أستسلم كلية وبإرادتي لكل الأفعال القهرية."}]},
+  {id:10,group:"compulsion",title:"مقدار سيطرتك على الأفعال القهرية",options:[
+    {score:0,text:"سيطرة تامة."},{score:1,text:"عادة ما أوقف الأفعال القهرية بصعوبة."},{score:2,text:"أحيانًا أستطيع إيقاف الأفعال القهرية بصعوبة."},{score:3,text:"أستطيع بصعوبة أن أؤخر الأفعال القهرية فقط، لكن يجب علي القيام بها حتى النهاية."},{score:4,text:"نادرًا ما أستطيع أن أؤخر القيام بالأفعال القهرية ولو للحظات."}]}
+];
+
+function renderQuestions(){
+  const root = document.getElementById("questions");
+  root.innerHTML = "";
+  questionsData.forEach(q => {
+    const field = document.createElement("div");
+    field.className = "field";
+    field.innerHTML = `<label class="main">${q.id}. ${q.title}</label>`;
+    const choices = document.createElement("div");
+    choices.className = "choices";
+    q.options.forEach(opt => {
+      const option = document.createElement("label");
+      option.className = "option";
+      option.innerHTML = `<input type="radio" name="q${q.id}" value="${opt.score}"><span class="score">${opt.score}</span><span>${opt.text}</span>`;
+      choices.appendChild(option);
+    });
+    field.appendChild(choices);
+    root.appendChild(field);
+  });
+}
+
+function showSurvey(){
+  document.getElementById("screen_intro").classList.add("hidden");
+  document.getElementById("surveyForm").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function getSeverity(total){
+  if (total <= 7) return {text:"أعراض خفيفة جدًا",cls:"sev-minimal",rec:"غالبًا لا تحتاج هذه الدرجة إلى تدخل علاجي إلا إذا كانت الأعراض تسبب ضيقًا واضحًا أو كان لديك تجنب شديد لمواقف معينة."};
+  if (total <= 11) return {text:"أعراض خفيفة",cls:"sev-mild",rec:"توجد أعراض خفيفة قد تتعارض مع حياتك بطرق ملحوظة. إذا كانت الأعراض متكررة أو مزعجة، فقد تكون استشارة مختص مفيدة."};
+  if (total <= 23) return {text:"أعراض متوسطة",cls:"sev-moderate",rec:"تشير النتيجة إلى مستوى متوسط من الأعراض. يُنصح بطلب تقييم مهني إذا كانت الأعراض تؤثر في الدراسة أو العمل أو العلاقات أو الراحة النفسية."};
+  if (total <= 31) return {text:"أعراض ملحوظة",cls:"sev-marked",rec:"قد تؤثر هذه الأعراض بشكل كبير في نوعية الحياة. يُفضَّل مراجعة مختص في الصحة النفسية لإجراء تقييم أدق ووضع خطة مناسبة."};
+  return {text:"أعراض شديدة",cls:"sev-severe",rec:"قد تسبب هذه الأعراض عجزًا واضحًا، ويُنصح بطلب تقييم من اختصاصي في اضطراب الوسواس القهري أو الصحة النفسية في أقرب وقت."};
+}
+
+function collectData(){
+  const consent = document.querySelector('input[name="consent"]:checked');
+  if (!consent) return {ok:false,msg:"يرجى تحديد الموافقة على المشاركة أولًا."};
+  if (consent.value === "no") return {ok:false,msg:"تم اختيار عدم الموافقة على المشاركة، لذلك لن يتم إرسال الرد أو حساب النتيجة."};
+
+  let obsession = 0, compulsion = 0, missing = [];
+  let answers = {};
+
+  questionsData.forEach(q => {
+    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+    if (!selected){ missing.push(q.id); return; }
+    const val = parseInt(selected.value, 10);
+    answers[`q${q.id}`] = val;
+    if (q.group === "obsession") obsession += val;
+    else compulsion += val;
+  });
+
+  if (missing.length) return {ok:false,msg:`يرجى الإجابة عن جميع أسئلة المقياس. الأسئلة غير المجاب عنها: ${missing.join("، ")}.`};
+
+  const total = obsession + compulsion;
+  const sev = getSeverity(total);
+
+  return {
+    ok:true,
+    payload:{
+      submitted_at: new Date().toISOString(),
+      age: document.getElementById("age").value,
+      gender: document.getElementById("gender").value,
+      education: document.getElementById("education").value,
+      employment: document.getElementById("employment").value,
+      previous_psych_diagnosis: document.getElementById("psych").value,
+      family_history_ocd: document.getElementById("family").value,
+      psychiatric_meds: document.getElementById("meds").value,
+      ...answers,
+      obsession_score: obsession,
+      compulsion_score: compulsion,
+      total_score: total,
+      severity: sev.text,
+      recommendation: sev.rec
+    },
+    obsession, compulsion, total, sev
+  };
+}
+
+function showError(msg){
+  const el = document.getElementById("errorBox");
+  el.textContent = msg;
+  el.classList.add("show");
+  document.getElementById("infoBox").classList.remove("show");
+}
+function showInfo(msg){
+  const el = document.getElementById("infoBox");
+  el.textContent = msg;
+  el.classList.add("show");
+}
+function clearMessages(){
+  ["errorBox","infoBox"].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove("show");
+    el.textContent = "";
+  });
+}
+function renderResult(data){
+  document.getElementById("totalValue").textContent = `${data.total} / 40`;
+  document.getElementById("obsValue").textContent = `${data.obsession} / 20`;
+  document.getElementById("compValue").textContent = `${data.compulsion} / 20`;
+  const sevBox = document.getElementById("severityBox");
+  sevBox.className = `sev ${data.sev.cls}`;
+  sevBox.textContent = `التصنيف: ${data.sev.text}`;
+  document.getElementById("recValue").textContent = data.sev.rec;
+  document.getElementById("resultCard").classList.add("show");
+}
+
+async function submitSurvey(){
+  clearMessages();
+  const data = collectData();
+  if (!data.ok){ showError(data.msg); return; }
+
+  renderResult(data);
+
+  if (!WEB_APP_URL || WEB_APP_URL.includes("PUT_YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL_HERE")){
+    showInfo("تم حساب النتيجة بنجاح. لم يتم إرسال الرد بعد لأن رابط Google Apps Script لم تتم إضافته داخل الملف.");
+    document.getElementById("resultCard").scrollIntoView({behavior:"smooth",block:"start"});
+    return;
+  }
+
+  try{
+    const res = await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: {"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify(data.payload)
+    });
+    if (!res.ok) throw new Error("فشل الاتصال بخدمة الحفظ.");
+    const json = await res.json();
+    if (json.status !== "success") throw new Error(json.message || "تعذر حفظ الرد.");
+    showInfo("تم حساب النتيجة وحفظ الرد بنجاح.");
+  } catch(err){
+    showInfo("تم حساب النتيجة، لكن تعذر حفظ الرد حاليًا. السبب: " + err.message);
+  }
+
+  document.getElementById("resultCard").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function resetUI(){
+  clearMessages();
+  document.getElementById("resultCard").classList.remove("show");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+renderQuestions();
+</script>
+</body>
+</html>
