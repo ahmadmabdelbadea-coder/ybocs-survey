@@ -14,7 +14,7 @@
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{margin:0;font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:linear-gradient(180deg,#eef4ff 0,var(--bg) 220px);color:var(--text);line-height:1.75}
-    .wrap{width:min(980px,100%);margin:auto;padding:18px}
+    .wrap{width:min(980px,100%);margin:auto;padding:26px 18px 18px}
     .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 20px;margin:18px 0}
     .hero{padding:30px 22px}
     h1,h2,h3{margin:0 0 10px;line-height:1.35}
@@ -60,10 +60,32 @@
     @media (max-width:760px){
       .wrap{padding:12px}.card{padding:18px 14px}.result-grid{grid-template-columns:1fr}.actions{flex-direction:column}button{width:100%}
     }
+
+    #progressContainer{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: rgba(229, 231, 235, 0.9);
+  z-index: 9999;
+}
+
+#progressBar{
+  width: 0%;
+  height: 100%;
+  background: #2563eb;
+  transition: width 0.25s ease;
+}
   </style>
 </head>
 <body>
+  <div id="progressContainer">
+     <div id="progressBar"></div>
+  </div>
+
   <div class="wrap">
+    
     <div class="card hero" id="screen_intro">
       <div class="badge">نسخة نهائية مخصصة للبحث</div>
       <h1>استبيان تقييم أعراض الوسواس القهري والتوعية به</h1>
@@ -82,32 +104,37 @@
         بعد قراءة الملصق، اضغط على زر <strong>ابدأ الاستبيان</strong>.
       </div>
 
-      <div class="actions">
-        <button type="button" class="primary" onclick="showSurvey()">ابدأ الاستبيان</button>
-      </div>
+      <div class="field" style="margin-top:18px;">
+  <label class="main">هل توافق على المشاركة في هذا الاستبيان لأغراض البحث العلمي؟</label>
+  <div class="choices">
+    <label class="option">
+      <input type="radio" name="intro_consent" value="yes">
+      <span>أوافق على المشاركة</span>
+    </label>
+    <label class="option">
+      <input type="radio" name="intro_consent" value="no">
+      <span>لا أوافق</span>
+    </label>
+  </div>
+</div>
+
+<div class="actions">
+  <button type="button" class="primary" onclick="showSurvey()">ابدأ الاستبيان</button>
+</div>
     </div>
 
     <form id="surveyForm" class="hidden" novalidate>
-      <div class="card">
-        <div class="section-title"><span class="num">1</span><h2>الموافقة على المشاركة</h2></div>
-        <div class="field">
-          <label class="main">هل توافق على المشاركة في هذا الاستبيان لأغراض البحث العلمي؟</label>
-          <div class="choices">
-            <label class="option"><input type="radio" name="consent" value="yes"><span>أوافق على المشاركة</span></label>
-            <label class="option"><input type="radio" name="consent" value="no"><span>لا أوافق</span></label>
-          </div>
-        </div>
-      </div>
+      
 
       <div class="card">
-        <div class="section-title"><span class="num">2</span><h2>البيانات الشخصية</h2></div>
+        <div class="section-title"><span class="num">1</span><h2>البيانات الشخصية</h2></div>
         <p class="muted small">هذه البيانات لا تدخل في حساب الدرجة النهائية، وتستخدم فقط لأغراض التحليل الإحصائي وتقليل التحيز.</p>
 
         <div class="field"><label class="main" for="age">الفئة العمرية</label>
           <select id="age"><option value="">اختر</option><option>أقل من 18 سنة</option><option>18–24 سنة</option><option>25–34 سنة</option><option>35–44 سنة</option><option>45 سنة أو أكثر</option></select>
         </div>
         <div class="field"><label class="main" for="gender">الجنس</label>
-          <select id="gender"><option value="">اختر</option><option>ذكر</option><option>أنثى</option><option>أفضل عدم الإفصاح</option></select>
+          <select id="gender"><option value="">اختر</option><option>ذكر</option><option>أنثى</option></select>
         </div>
         <div class="field"><label class="main" for="education">المستوى التعليمي</label>
           <select id="education"><option value="">اختر</option><option>ثانوي</option><option>طالب جامعي</option><option>خريج جامعي</option><option>دراسات عليا</option></select>
@@ -127,7 +154,7 @@
       </div>
 
       <div class="card">
-        <div class="section-title"><span class="num">3</span><h2>مقياس ييل براون للوسواس القهري (Y‑BOCS)</h2></div>
+        <div class="section-title"><span class="num">2</span><h2>مقياس ييل براون للوسواس القهري (Y‑BOCS)</h2></div>
         <p class="muted">يرجى اختيار الإجابة التي تصف حالتك خلال <strong>السبعة أيام الماضية</strong>.</p>
         <div id="questions"></div>
       </div>
@@ -148,11 +175,16 @@
           <div class="box"><div class="label">درجة الأفكار الوسواسية</div><div class="value" id="obsValue">—</div></div>
           <div class="box"><div class="label">درجة الأفعال القهرية</div><div class="value" id="compValue">—</div></div>
         </div>
-        <div id="severityBox" class="sev">—</div>
+        <div id="severityBox" class="sev" style="font-size:1.2rem;text-align:center;">—</div>
         <div class="box">
           <div class="label">التوصية</div>
           <div class="value" id="recValue" style="font-size:1rem;font-weight:700;">—</div>
         </div>
+
+        <div class="footer-note">
+          كلما زادت الدرجة، زادت شدة الأعراض.
+        </div>
+
         <div class="footer-note">
           هذا الاستبيان لا يغني عن التقييم الطبي أو النفسي المتخصص. إذا كانت الأعراض تسبب ضيقًا واضحًا أو تؤثر في حياتك اليومية، فينصح بطلب المساعدة من مختص بالصحة النفسية.
         </div>
@@ -162,6 +194,27 @@
 
 <script>
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydUyAJjMBzv0vfLtO92j9jue1zlSgWHq7CLiDPu9ePszQ2DuJRmXZU9yjVFLenaVdS/exec";
+const TEST_MODE = true;
+
+let startTime = Date.now();
+
+function checkIfSubmitted(){
+  if(TEST_MODE) return;
+
+  if(localStorage.getItem("ybocs_submitted") === "true"){
+    document.body.innerHTML = `
+      <div style="max-width:700px;margin:60px auto;padding:24px;font-family:Segoe UI,Tahoma,Arial,sans-serif;direction:rtl;text-align:center;">
+        <h2>تم إرسال الاستبيان مسبقًا</h2>
+        <p>تشير بيانات هذا المتصفح إلى أنه تم إرسال الاستبيان من هذا الجهاز من قبل.</p>
+        <p>شكرًا لمشاركتك.</p>
+      </div>
+    `;
+  }
+}
+
+function generateID(){
+  return "P-" + Math.random().toString(36).substring(2,8).toUpperCase();
+}
 
 const questionsData = [
   {id:1,group:"obsession",title:"مقدار الوقت الذي تستغرقه الأفكار الوسواسية",options:[
@@ -207,6 +260,23 @@ function renderQuestions(){
 }
 
 function showSurvey(){
+  const consent = document.querySelector('input[name="intro_consent"]:checked');
+
+  if(!consent){
+    alert("يرجى تحديد الموافقة على المشاركة أولًا.");
+    return;
+  }
+
+  if(consent.value === "no"){
+    document.body.innerHTML = `
+      <div style="max-width:700px;margin:60px auto;padding:24px;font-family:Segoe UI,Tahoma,Arial,sans-serif;direction:rtl;text-align:center;">
+        <h2>شكرًا لاهتمامك</h2>
+        <p>بما أنك اخترت عدم الموافقة على المشاركة، فلن يتم عرض الاستبيان.</p>
+      </div>
+    `;
+    return;
+  }
+
   document.getElementById("screen_intro").classList.add("hidden");
   document.getElementById("surveyForm").classList.remove("hidden");
   window.scrollTo({top:0,behavior:"smooth"});
@@ -221,10 +291,6 @@ function getSeverity(total){
 }
 
 function collectData(){
-  const consent = document.querySelector('input[name="consent"]:checked');
-  if (!consent) return {ok:false,msg:"يرجى تحديد الموافقة على المشاركة أولًا."};
-  if (consent.value === "no") return {ok:false,msg:"تم اختيار عدم الموافقة على المشاركة، لذلك لن يتم إرسال الرد أو حساب النتيجة."};
-
   let obsession = 0, compulsion = 0, missing = [];
   let answers = {};
 
@@ -245,7 +311,9 @@ function collectData(){
   return {
     ok:true,
     payload:{
+      participant_id: generateID(),
       submitted_at: new Date().toISOString(),
+      response_time_seconds: Math.round((Date.now() - startTime) / 1000),
       age: document.getElementById("age").value,
       gender: document.getElementById("gender").value,
       education: document.getElementById("education").value,
@@ -270,11 +338,13 @@ function showError(msg){
   el.classList.add("show");
   document.getElementById("infoBox").classList.remove("show");
 }
+
 function showInfo(msg){
   const el = document.getElementById("infoBox");
   el.textContent = msg;
   el.classList.add("show");
 }
+
 function clearMessages(){
   ["errorBox","infoBox"].forEach(id => {
     const el = document.getElementById(id);
@@ -282,6 +352,7 @@ function clearMessages(){
     el.textContent = "";
   });
 }
+
 function renderResult(data){
   document.getElementById("totalValue").textContent = `${data.total} / 40`;
   document.getElementById("obsValue").textContent = `${data.obsession} / 20`;
@@ -316,6 +387,9 @@ async function submitSurvey(){
     const json = await res.json();
     if (json.status !== "success") throw new Error(json.message || "تعذر حفظ الرد.");
     showInfo("تم حساب النتيجة وحفظ الرد بنجاح.");
+    if(!TEST_MODE){
+  localStorage.setItem("ybocs_submitted", "true");
+}
   } catch(err){
     showInfo("تم حساب النتيجة، لكن تعذر حفظ الرد حاليًا. السبب: " + err.message);
   }
@@ -329,6 +403,25 @@ function resetUI(){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
+function updateProgress(){
+  const total = 10;
+  let answered = 0;
+  for(let i=1;i<=10;i++){
+    if(document.querySelector(`input[name="q${i}"]:checked`)){
+      answered++;
+    }
+  }
+  const percent = (answered/total)*100;
+  document.getElementById("progressBar").style.width = percent + "%";
+}
+
+document.addEventListener("change", function(e){
+  if(e.target.name && e.target.name.startsWith("q")){
+    updateProgress();
+  }
+});
+
+checkIfSubmitted();
 renderQuestions();
 </script>
 </body>
