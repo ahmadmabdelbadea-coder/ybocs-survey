@@ -57,35 +57,18 @@
     .sev-severe{background:var(--danger-bg);color:var(--danger);border-color:#fecaca}
     .small{font-size:.92rem}
     .footer-note{color:var(--muted);font-size:.92rem;margin-top:14px}
+    .required-star{color:#dc2626}
     @media (max-width:760px){
       .wrap{padding:12px}.card{padding:18px 14px}.result-grid{grid-template-columns:1fr}.actions{flex-direction:column}button{width:100%}
     }
-
-    #progressContainer{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 8px;
-  background: rgba(229, 231, 235, 0.9);
-  z-index: 9999;
-}
-
-#progressBar{
-  width: 0%;
-  height: 100%;
-  background: #2563eb;
-  transition: width 0.25s ease;
-}
+    #progressContainer{position:fixed;top:0;left:0;width:100%;height:8px;background:rgba(229,231,235,.9);z-index:9999}
+    #progressBar{width:0%;height:100%;background:#2563eb;transition:width .25s ease}
   </style>
 </head>
 <body>
-  <div id="progressContainer">
-     <div id="progressBar"></div>
-  </div>
+  <div id="progressContainer"><div id="progressBar"></div></div>
 
   <div class="wrap">
-    
     <div class="card hero" id="screen_intro">
       <div class="badge">نسخة نهائية مخصصة للبحث</div>
       <h1>استبيان تقييم أعراض الوسواس القهري والتوعية به</h1>
@@ -105,57 +88,52 @@
       </div>
 
       <div class="field" style="margin-top:18px;">
-  <label class="main">هل توافق على المشاركة في هذا الاستبيان لأغراض البحث العلمي؟</label>
-  <div class="choices">
-    <label class="option">
-      <input type="radio" name="intro_consent" value="yes">
-      <span>أوافق على المشاركة</span>
-    </label>
-    <label class="option">
-      <input type="radio" name="intro_consent" value="no">
-      <span>لا أوافق</span>
-    </label>
-  </div>
-</div>
+        <label class="main">هل توافق على المشاركة في هذا الاستبيان لأغراض البحث العلمي؟ <span class="required-star">*</span></label>
+        <div class="choices">
+          <label class="option"><input type="radio" name="intro_consent" value="yes"><span>أوافق على المشاركة</span></label>
+          <label class="option"><input type="radio" name="intro_consent" value="no"><span>لا أوافق</span></label>
+        </div>
+      </div>
 
-<div class="actions">
-  <button type="button" class="primary" onclick="showSurvey()">ابدأ الاستبيان</button>
-</div>
+      <div class="actions">
+        <button type="button" class="primary" onclick="showSurvey()">ابدأ الاستبيان</button>
+      </div>
     </div>
 
     <form id="surveyForm" class="hidden" novalidate>
-      
-
       <div class="card">
         <div class="section-title"><span class="num">1</span><h2>البيانات الشخصية</h2></div>
         <p class="muted small">هذه البيانات لا تدخل في حساب الدرجة النهائية، وتستخدم فقط لأغراض التحليل الإحصائي وتقليل التحيز.</p>
 
-        <div class="field"><label class="main" for="age">الفئة العمرية</label>
-          <select id="age"><option value="">اختر</option><option>أقل من 18 سنة</option><option>18–24 سنة</option><option>25–34 سنة</option><option>35–44 سنة</option><option>45 سنة أو أكثر</option></select>
+        <div class="field"><label class="main" for="age">الفئة العمرية <span class="required-star">*</span></label>
+          <select id="age" required><option value="">اختر</option><option>أقل من 18 سنة</option><option>18–24 سنة</option><option>25–34 سنة</option><option>35–44 سنة</option><option>45 سنة أو أكثر</option></select>
         </div>
-        <div class="field"><label class="main" for="gender">الجنس</label>
-          <select id="gender"><option value="">اختر</option><option>ذكر</option><option>أنثى</option></select>
+        <div class="field"><label class="main" for="gender">الجنس <span class="required-star">*</span></label>
+          <select id="gender" required><option value="">اختر</option><option>ذكر</option><option>أنثى</option></select>
         </div>
-        <div class="field"><label class="main" for="education">المستوى التعليمي</label>
-          <select id="education"><option value="">اختر</option><option>ثانوي</option><option>طالب جامعي</option><option>خريج جامعي</option><option>دراسات عليا</option></select>
+        <div class="field"><label class="main" for="residence">السكن: قرية أم مدينة؟ <span class="required-star">*</span></label>
+          <select id="residence" required><option value="">اختر</option><option>مدينة</option><option>قرية</option></select>
         </div>
-        <div class="field"><label class="main" for="employment">الحالة الوظيفية</label>
-          <select id="employment"><option value="">اختر</option><option>طالب</option><option>موظف</option><option>غير موظف</option></select>
+        <div class="field"><label class="main" for="education">المستوى التعليمي <span class="required-star">*</span></label>
+          <select id="education" required><option value="">اختر</option><option>ثانوي</option><option>طالب جامعي</option><option>خريج جامعي</option><option>دراسات عليا</option></select>
         </div>
-        <div class="field"><label class="main" for="psych">هل سبق تشخيصك باضطراب نفسي؟</label>
-          <select id="psych"><option value="">اختر</option><option>نعم</option><option>لا</option><option>أفضل عدم الإجابة</option></select>
+        <div class="field"><label class="main" for="employment">الحالة الوظيفية <span class="required-star">*</span></label>
+          <select id="employment" required><option value="">اختر</option><option>طالب</option><option>موظف</option><option>غير موظف</option></select>
         </div>
-        <div class="field"><label class="main" for="family">هل يوجد تاريخ عائلي للوسواس القهري؟</label>
-          <select id="family"><option value="">اختر</option><option>نعم</option><option>لا</option><option>لا أعلم</option></select>
+        <div class="field"><label class="main" for="psych">هل سبق تشخيصك باضطراب نفسي؟ <span class="required-star">*</span></label>
+          <select id="psych" required><option value="">اختر</option><option>نعم</option><option>لا</option><option>أفضل عدم الإجابة</option></select>
         </div>
-        <div class="field"><label class="main" for="meds">هل تتناول حاليًا أدوية نفسية؟</label>
-          <select id="meds"><option value="">اختر</option><option>نعم</option><option>لا</option></select>
+        <div class="field"><label class="main" for="family">هل يوجد تاريخ عائلي للوسواس القهري؟ <span class="required-star">*</span></label>
+          <select id="family" required><option value="">اختر</option><option>نعم</option><option>لا</option><option>لا أعلم</option></select>
+        </div>
+        <div class="field"><label class="main" for="meds">هل تتناول حاليًا أدوية نفسية؟ <span class="required-star">*</span></label>
+          <select id="meds" required><option value="">اختر</option><option>نعم</option><option>لا</option></select>
         </div>
       </div>
 
       <div class="card">
         <div class="section-title"><span class="num">2</span><h2>مقياس ييل براون للوسواس القهري (Y‑BOCS)</h2></div>
-        <p class="muted">يرجى اختيار الإجابة التي تصف حالتك خلال <strong>السبعة أيام الماضية</strong>.</p>
+        <p class="muted">يرجى اختيار الإجابة التي تصف حالتك خلال <strong>السبعة أيام الماضية</strong>. جميع الأسئلة إجبارية.</p>
         <div id="questions"></div>
       </div>
 
@@ -180,14 +158,8 @@
           <div class="label">التوصية</div>
           <div class="value" id="recValue" style="font-size:1rem;font-weight:700;">—</div>
         </div>
-
-        <div class="footer-note">
-          كلما زادت الدرجة، زادت شدة الأعراض.
-        </div>
-
-        <div class="footer-note">
-          هذا الاستبيان لا يغني عن التقييم الطبي أو النفسي المتخصص. إذا كانت الأعراض تسبب ضيقًا واضحًا أو تؤثر في حياتك اليومية، فينصح بطلب المساعدة من مختص بالصحة النفسية.
-        </div>
+        <div class="footer-note">كلما زادت الدرجة، زادت شدة الأعراض.</div>
+        <div class="footer-note">هذا الاستبيان لا يغني عن التقييم الطبي أو النفسي المتخصص. إذا كانت الأعراض تسبب ضيقًا واضحًا أو تؤثر في حياتك اليومية، فينصح بطلب المساعدة من مختص بالصحة النفسية.</div>
       </div>
     </form>
   </div>
@@ -195,12 +167,10 @@
 <script>
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbydUyAJjMBzv0vfLtO92j9jue1zlSgWHq7CLiDPu9ePszQ2DuJRmXZU9yjVFLenaVdS/exec";
 const TEST_MODE = true;
-
 let startTime = Date.now();
 
 function checkIfSubmitted(){
   if(TEST_MODE) return;
-
   if(localStorage.getItem("ybocs_submitted") === "true"){
     document.body.innerHTML = `
       <div style="max-width:700px;margin:60px auto;padding:24px;font-family:Segoe UI,Tahoma,Arial,sans-serif;direction:rtl;text-align:center;">
@@ -245,7 +215,7 @@ function renderQuestions(){
   questionsData.forEach(q => {
     const field = document.createElement("div");
     field.className = "field";
-    field.innerHTML = `<label class="main">${q.id}. ${q.title}</label>`;
+    field.innerHTML = `<label class="main">${q.id}. ${q.title} <span class="required-star">*</span></label>`;
     const choices = document.createElement("div");
     choices.className = "choices";
     q.options.forEach(opt => {
@@ -261,12 +231,10 @@ function renderQuestions(){
 
 function showSurvey(){
   const consent = document.querySelector('input[name="intro_consent"]:checked');
-
   if(!consent){
     alert("يرجى تحديد الموافقة على المشاركة أولًا.");
     return;
   }
-
   if(consent.value === "no"){
     document.body.innerHTML = `
       <div style="max-width:700px;margin:60px auto;padding:24px;font-family:Segoe UI,Tahoma,Arial,sans-serif;direction:rtl;text-align:center;">
@@ -276,7 +244,6 @@ function showSurvey(){
     `;
     return;
   }
-
   document.getElementById("screen_intro").classList.add("hidden");
   document.getElementById("surveyForm").classList.remove("hidden");
   window.scrollTo({top:0,behavior:"smooth"});
@@ -290,7 +257,29 @@ function getSeverity(total){
   return {text:"أعراض شديدة",cls:"sev-severe",rec:"قد تسبب هذه الأعراض عجزًا واضحًا، ويُنصح بطلب تقييم من اختصاصي في اضطراب الوسواس القهري أو الصحة النفسية في أقرب وقت."};
 }
 
+function validateDemographics(){
+  const requiredFields = [
+    {id:"age", label:"الفئة العمرية"},
+    {id:"gender", label:"الجنس"},
+    {id:"residence", label:"السكن"},
+    {id:"education", label:"المستوى التعليمي"},
+    {id:"employment", label:"الحالة الوظيفية"},
+    {id:"psych", label:"التشخيص النفسي السابق"},
+    {id:"family", label:"التاريخ العائلي للوسواس القهري"},
+    {id:"meds", label:"تناول الأدوية النفسية"}
+  ];
+
+  const missing = requiredFields.filter(f => !document.getElementById(f.id).value).map(f => f.label);
+  if(missing.length){
+    return {ok:false, msg:`يرجى استكمال جميع بيانات القسم الأول: ${missing.join("، ")}`};
+  }
+  return {ok:true};
+}
+
 function collectData(){
+  const demographicsCheck = validateDemographics();
+  if(!demographicsCheck.ok) return demographicsCheck;
+
   let obsession = 0, compulsion = 0, missing = [];
   let answers = {};
 
@@ -316,6 +305,7 @@ function collectData(){
       response_time_seconds: Math.round((Date.now() - startTime) / 1000),
       age: document.getElementById("age").value,
       gender: document.getElementById("gender").value,
+      residence: document.getElementById("residence").value,
       education: document.getElementById("education").value,
       employment: document.getElementById("employment").value,
       previous_psych_diagnosis: document.getElementById("psych").value,
@@ -343,6 +333,7 @@ function showInfo(msg){
   const el = document.getElementById("infoBox");
   el.textContent = msg;
   el.classList.add("show");
+  document.getElementById("errorBox").classList.remove("show");
 }
 
 function clearMessages(){
@@ -362,18 +353,24 @@ function renderResult(data){
   sevBox.textContent = `التصنيف: ${data.sev.text}`;
   document.getElementById("recValue").textContent = data.sev.rec;
   document.getElementById("resultCard").classList.add("show");
+  document.getElementById("resultCard").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 async function submitSurvey(){
   clearMessages();
   const data = collectData();
-  if (!data.ok){ showError(data.msg); return; }
+  if (!data.ok){
+    showError(data.msg);
+    if(document.getElementById("errorBox").classList.contains("show")){
+      document.getElementById("errorBox").scrollIntoView({behavior:"smooth",block:"center"});
+    }
+    return;
+  }
 
   renderResult(data);
 
   if (!WEB_APP_URL || WEB_APP_URL.includes("PUT_YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL_HERE")){
     showInfo("تم حساب النتيجة بنجاح. لم يتم إرسال الرد بعد لأن رابط Google Apps Script لم تتم إضافته داخل الملف.");
-    document.getElementById("resultCard").scrollIntoView({behavior:"smooth",block:"start"});
     return;
   }
 
@@ -388,18 +385,18 @@ async function submitSurvey(){
     if (json.status !== "success") throw new Error(json.message || "تعذر حفظ الرد.");
     showInfo("تم حساب النتيجة وحفظ الرد بنجاح.");
     if(!TEST_MODE){
-  localStorage.setItem("ybocs_submitted", "true");
-}
+      localStorage.setItem("ybocs_submitted", "true");
+    }
   } catch(err){
     showInfo("تم حساب النتيجة، لكن تعذر حفظ الرد حاليًا. السبب: " + err.message);
   }
-
-  document.getElementById("resultCard").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 function resetUI(){
   clearMessages();
   document.getElementById("resultCard").classList.remove("show");
+  document.getElementById("progressBar").style.width = "0%";
+  startTime = Date.now();
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
@@ -411,7 +408,7 @@ function updateProgress(){
       answered++;
     }
   }
-  const percent = (answered/total)*100;
+  const percent = (answered / total) * 100;
   document.getElementById("progressBar").style.width = percent + "%";
 }
 
